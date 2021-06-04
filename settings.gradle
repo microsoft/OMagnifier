@@ -1,0 +1,3 @@
+include ':magnifierlib'
+include ':app'
+rootProject.name = "magnifier"

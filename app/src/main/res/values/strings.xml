@@ -1,0 +1,7 @@
+<resources>
+    <!--
+      ~ Copyright (c) Microsoft Corporation. All rights reserved.
+      ~ Licensed under the MIT License.
+      -->
+    <string name="app_name">Magnifier</string>
+</resources>

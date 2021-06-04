@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Microsoft Corporation. All rights reserved.
+  ~ Licensed under the MIT License.
+  -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="oval">
+    <corners android:radius="25dip"/>
+    <stroke android:color="#FFD600" android:width="@dimen/floating_width"/>
+    <solid android:color="@android:color/white"/>
+</shape>

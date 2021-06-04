@@ -1,18 +1,119 @@
-# Project
+# OMagnifier
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+OMagnifier is an Android APM SDK that can be used to monitor the app performance.
 
-As the maintainer of this project, please make a few updates:
+## Features Support
+- [x] Frame rate monitor: floating window for showing fps
+- [x] Memory usage metrics monitor: monitor and collect the memeory usage metrics
+- [ ] Memory usage viewer
+- [ ] Battery usage monitor
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+## APIs
+### Frame rate monitor
+
+1. Start frame rate monitor
+```kotlin
+Magnifier.startMonitorFPS(
+    FPSMonitorConfig.Builder(this.application)
+        .lowPercentage(40 / 60f)  // show red tips, (2.0f / 3.0f) by default
+        .mediumPercentage(50 / 60f) // show yellow tips, (5.0f / 6.0f) by default
+        .refreshRate(60f) // defaultDisplay.refreshRate by default
+        .build()
+)
+```
+
+2. Stop frame rate monitor
+```kotlin
+Magnifier.stopMonitorFPS()
+```
+
+### Memory usage monitor
+
+The mectrics we support now:
+
+- `HeapMemoryInfo`: heap memory and vss/pss memory
+- `FileDescriptorInfo`: file readlink and max open file count
+- `ThreadInfo`: thread count and thread stack trace
+
+1. Start Memory usage metrics monitor
+
+```kotlin
+MemoryMonitorConfig.Builder()
+    .enableExceedLimitSample(0.8f, // the benchmark for Exceed_Limit type sampler, if we reach out 80% the max, collect the metrics, 0.8f by default
+        10000 // the threshold for Exceed_Limit type sampler, 10s by default
+    )
+    .enableTimingSample(60 * 1000) // threshold for the timing checker, 1 min by default
+    .onSampleListener(object : MemoryMonitor.OnSampleListener {
+        override fun onSampleHeap(
+            heapMemoryInfo: HeapMemoryInfo,
+            sampleType: MemoryMonitor.SampleType
+        ) {
+            Log.d(TAG, "heapMemoryInfo:$heapMemoryInfo,sampleType:$sampleType")
+        }
+
+        override fun onSampleFile(
+            fileDescriptorInfo: FileDescriptorInfo,
+            sampleType: MemoryMonitor.SampleType
+        ) {
+            Log.d(TAG, "fileDescriptorInfo:${fileDescriptorInfo.fdMaxCount},sampleType:$sampleType")
+        }
+
+        override fun onSampleThread(
+            threadInfo: ThreadInfo,
+            sampleType: MemoryMonitor.SampleType
+        ) {
+            Log.d(TAG, "threadInfo:${threadInfo.threadsCount},sampleType:$sampleType")
+        }
+    }).build()
+```
+
+2. Collect the memory usage metrics immdiately
+
+```koltin
+Magnifier.dumpMemoryImmediately(object : MemoryMonitor.OnSampleListener {
+    override fun onSampleHeap(
+        heapMemoryInfo: HeapMemoryInfo,
+        sampleType: MemoryMonitor.SampleType
+    ) {
+        Log.d(TAG, "heapMemoryInfo:$heapMemoryInfo,sampleType:$sampleType")
+    }
+
+    override fun onSampleFile(
+        fileDescriptorInfo: FileDescriptorInfo,
+        sampleType: MemoryMonitor.SampleType
+    ) {
+        Log.d(TAG, "fileDescriptorInfo:${fileDescriptorInfo.fdMaxCount},sampleType:$sampleType")
+    }
+
+    override fun onSampleThread(
+        threadInfo: ThreadInfo,
+        sampleType: MemoryMonitor.SampleType
+    ) {
+        Log.d(TAG, "threadInfo:${threadInfo.threadsCount},sampleType:$sampleType")
+    }
+})
+```
+
+
+3. Stop frame rate monitor
+
+```kotlin
+Magnifier.stopMonitorMemory()
+```
+
+## Demo
+
+The demo is under Module app.
+
+1. Install the app
+2. Run the app
+3. Click the button for testing
+
+
 
 ## Contributing
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+This project welcomes contributions and suggestions. Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
 the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
 
@@ -24,10 +125,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-## Trademarks
+## License
 
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
-trademarks or logos is subject to and must follow 
-[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
-Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
-Any use of third-party trademarks or logos are subject to those third-party's policies.
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+Licensed under the [MIT](LICENSE) license.
