@@ -73,14 +73,19 @@ publishing {
     }
 
     repositories {
+
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+        String vsoUserName = properties.getProperty('vsoUserName')
+        String vsoPassword = properties.getProperty('vsoPassword')
+        String vsoUrl = properties.getProperty('vsoUrl')
+
         maven {
-            url 'https://office.pkgs.visualstudio.com/_packaging/OutlookMobile/maven/v1'
+            url vsoUrl
             credentials {
-                // TODO: replace this local.properties after set up pipelines in VSTS
-                Properties properties = new Properties()
-                properties.load(project.rootProject.file('local.properties').newDataInputStream())
-                username = properties.getProperty('vsoUserName')
-                password = properties.getProperty('vsoPassword')
+                username = vsoUserName
+                password = vsoPassword
             }
         }
     }
