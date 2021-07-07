@@ -7,6 +7,7 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
 }
+apply from: './publish.gradle'
 
 android {
     compileSdkVersion 30
@@ -15,7 +16,7 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode Integer.parseInt(System.getProperty("versionCode", "1"))
+        versionCode Integer.parseInt(System.getProperty("versionCode", project.VERSION_CODE))
         versionName System.getProperty("versionName", project.VERSION_NAME)
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
