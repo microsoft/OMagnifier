@@ -69,7 +69,7 @@ MemoryMonitorConfig.Builder()
 
 2. Collect the memory usage metrics immdiately
 
-```koltin
+```kotlin
 Magnifier.dumpMemoryImmediately(object : MemoryMonitor.OnSampleListener {
     override fun onSampleHeap(
         heapMemoryInfo: HeapMemoryInfo,
