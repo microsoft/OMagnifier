@@ -62,7 +62,7 @@ jobs:
           }
         ' | \
         jq --raw-output '.data.repository.release.releaseAssets.nodes[0].downloadUrl' )
-        echo "download_url=$DETEKT_DOWNLOAD_URL" >> $GITHUB_OUTPUT
+        echo "download_url=$DETEKT_DOWNLOAD_URL" >> "$GITHUB_OUTPUT"
 
     # Sets up the detekt cli
     - name: Setup Detekt
